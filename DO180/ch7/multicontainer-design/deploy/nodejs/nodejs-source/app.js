@@ -10,13 +10,34 @@ model.connect(db.params, function(err) {
 });
 
 var server = restify.createServer() 
-    .use(restify.fullResponse())
-    .use(restify.queryParser())
-    .use(restify.bodyParser());
+    .use(restify.plugins.fullResponse())
+    .use(restify.plugins.queryParser())
+    .use(restify.plugins.bodyParser());
     
 controller.context(server, '/todo/api', model); 
 
-server.get(/\/todo\/?.*/, restify.serveStatic({
+server.get({
+    path: '/todo/api/items/:id'
+}, controller.read);
+
+
+server.get({
+    path: '/todo/api/items'
+}, controller.list);
+
+server.post({
+    path: '/todo/api/items'
+}, controller.save);
+
+server.del({
+    path: '/todo/api/items/:id'
+}, controller.destroy);
+
+
+server.get({
+    path: '/todo/*',
+    name: 'todoapi'
+    }, restify.plugins.serveStatic({
     'directory': __dirname,
     'default': 'index.html'
 }));

@@ -9,10 +9,10 @@ exports.context = function(server, path, itemsModel) {
     if (path)
         context = path + context;
         
-    server.get(context + '/', this.list);
-    server.get(context + '/:id', this.read);
-    server.post(context + '/', this.save);
-    server.del(context + '/:id', this.destroy);
+    // server.get(context + '/', this.list);
+    // server.get(context + '/:id', this.read);
+    // server.post(context + '/', this.save);
+    // server.del(context + '/:id', this.destroy);
     
     model = itemsModel;
 };
@@ -78,8 +78,8 @@ exports.read = function(req, res, next) {
 
 
 exports.save = function(req, res, next) {
-    if (req.params.id) {
-        model.update(req.params.id, req.params.description, req.params.done, function(err, item) {
+    if (req.body.id) {
+        model.update(req.body.id, req.body.description, req.body.done, function(err, item) {
             if (err) {
                 next(err);
             }
@@ -90,7 +90,7 @@ exports.save = function(req, res, next) {
         });
     }
     else {
-        model.create(req.params.description, req.params.done, function(err, item) {
+        model.create(req.body.description, req.body.done, function(err, item) {
             if (err) {
                 next(err);
             }

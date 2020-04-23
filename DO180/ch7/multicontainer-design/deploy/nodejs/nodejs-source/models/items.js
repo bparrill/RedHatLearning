@@ -46,12 +46,12 @@ exports.create = function(description, done, callback) {
 }
 
 exports.update = function(key, description, done, callback) {
-    Item.find({ where:{ id: key } }).then(function(item) {
+    Item.findOne({ where:{ id: key } }).then(function(item) {
         if (!item) {
             callback(new Error("Nothing found for key " + key));
         }
         else {
-            item.updateAttributes({
+            item.update({
                 description: description,
                 done: (done) ? true : false
             }).then(function() {
@@ -67,7 +67,7 @@ exports.update = function(key, description, done, callback) {
 
 
 exports.read = function(key, callback) {
-    Item.find({ where:{ id: key } }).then(function(item) {
+    Item.findOne({ where:{ id: key } }).then(function(item) {
         if (!item) {
             callback(new Error("Nothing found for key " + key));
         }
@@ -85,7 +85,7 @@ exports.read = function(key, callback) {
 }
 
 exports.destroy = function(key, callback) {
-    Item.find({ where:{ id: key } }).then(function(item) {
+    Item.findOne({ where:{ id: key } }).then(function(item) {
         if (!item) {
             callback(new Error("Nothing found for " + key));
         }
